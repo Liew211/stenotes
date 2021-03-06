@@ -10,3 +10,9 @@ window.addEventListener("DOMContentLoaded", () => {
     replaceText(`${type}-version`, process.versions[type]);
   }
 });
+
+// Node imports for renderer.js
+const { contextBridge, desktopCapturer } = require("electron");
+contextBridge.exposeInMainWorld("stenotesAPI", {
+  getSources: desktopCapturer.getSources,
+});
