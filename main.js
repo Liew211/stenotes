@@ -6,7 +6,7 @@ function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 150,
     webPreferences: {
       nodeIntegration: false, // is default value after Electron v5
       contextIsolation: true, // protect against prototype pollution
@@ -14,7 +14,7 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
     },
     alwaysOnTop: true,
-    backgroundColor: "#c0aaaaaa",
+    backgroundColor: "#b0aaaaaa",
     frame: false,
     transparent: true,
   });
@@ -23,7 +23,7 @@ function createWindow() {
   win.loadFile("index.html");
 
   win.setVisibleOnAllWorkspaces(true);
-  win.setIgnoreMouseEvents(true);
+//   win.setIgnoreMouseEvents(true);
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
