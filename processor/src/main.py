@@ -8,9 +8,9 @@ from collections import deque
 from threading import Thread
 
 
-INPUT_DEVICE = 3
-MODEL_PATH = "processor/models/vosk-aspire"
-BUFFER_SIZE = 16
+INPUT_DEVICE = 2
+MODEL_PATH = "models/vosk-model-en-us-aspire-0.2"
+BUFFER_SIZE = 8
 print("here")
 
 app = Flask(__name__)
@@ -22,7 +22,7 @@ def on_connect():
     print("connected server!!")
     socketio.emit("serverResponse", "First Push")
     socketio.start_background_task(target=main)
-    
+
 
 @socketio.on('disconnect')
 def on_disconnect():
@@ -33,7 +33,7 @@ def on_disconnect():
 queue = []
 print("before main")
 def main():
-    
+
     for text_type, text in transcribe(input_device=INPUT_DEVICE, model_path=MODEL_PATH):
         socketio.sleep(0)
         if text_type is TextType.SENTENCE:
@@ -52,6 +52,6 @@ def main():
 
 if __name__ == "__main__":
     socketio.run(app,port=8000)
-    
+
     print("HELLO WORLD")
     # eventlet.wsgi.server(eventlet.listen(('', 8000)), app)
