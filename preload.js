@@ -5,14 +5,15 @@ const replaceText = (selector, text) => {
   if (element) element.innerText = text;
 };
 
+const io = require("socket.io-client");
+var socket = io("http://localhost:8000");
+
 window.addEventListener("DOMContentLoaded", () => {
   for (const type of ["chrome", "node", "electron"]) {
     replaceText(`${type}-version`, process.versions[type]);
   }
+  socket =  io("http://localhost:8000");
 });
-
-const io = require("socket.io-client");
-const socket =  io("http://localhost:8000");
 
 socket.on("connect", () => {
   console.log("socket.id"); // x8WIv7-mJelg7on_ALbx
@@ -23,6 +24,7 @@ socket.on("serverResponse", () => {
 });
 
 socket.on("disconnect", () => {
+  socket = io("http://localhost:8000");
   console.log("disconnected"); // undefined
 });
 

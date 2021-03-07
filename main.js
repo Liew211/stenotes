@@ -11,7 +11,7 @@ function createMainWindow() {
     x: width/2-800,
     y: height-225,
     width: 800,
-    height: 200,
+    height: 150,
     webPreferences: {
       nodeIntegration: false, // is default value after Electron v5
       contextIsolation: true, // protect against prototype pollution
@@ -39,9 +39,9 @@ function createSideWindow() {
   let display = screen.getPrimaryDisplay();
   let width = display.bounds.width;
   const win = new BrowserWindow({
-    x: width-225,
+    x: width-325,
     y:100,
-    width: 200,
+    width: 300,
     height: 800,
     webPreferences: {
       nodeIntegration: false, // is default value after Electron v5
