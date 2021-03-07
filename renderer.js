@@ -31,6 +31,6 @@ window.stenotesAPI
 			});
 		}
 		const audio = document.querySelector("video");
-		audio.srcObject = audioStream;
-		audio.onloadedmetadata = (e) => audio.play();
+		// audio.srcObject = audioStream;
+		// audio.onloadedmetadata = (e) => audio.play();
 	});

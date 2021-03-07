@@ -1,3 +1,12 @@
+html {
+    font-size: 16px;
+}
+
+body {
+    display: inline;
+    font-size: 2rem;
+}
+
 .draggable {
     -webkit-user-select: none;
     -webkit-user-drag: none;
@@ -5,10 +14,7 @@
     user-select: none;
     height: 2rem;
 }
-html {
-    font-size: 16px;
-}
-body *{
-    display: inline;
-    font-size: 2rem;
+
+.text * {
+    display: block;
 }

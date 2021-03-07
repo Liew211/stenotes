@@ -4,6 +4,7 @@ import vosk
 import logging
 import json
 from enum import Enum
+import sys
 
 
 class TextType(Enum):
@@ -26,6 +27,7 @@ def transcribe(input_device, model_path):
             logging.warning(status)
         stream.put(bytes(indata))
 
+
     with sd.RawInputStream(
         samplerate=samplerate,
         blocksize=8000,
@@ -34,6 +36,7 @@ def transcribe(input_device, model_path):
         channels=1,
         callback=callback,
     ):
+
         while True:
             data = stream.get()
             if rec.AcceptWaveform(data):

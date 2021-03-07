@@ -6,7 +6,7 @@ function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
-    height: 800,
+    height: 200,
     webPreferences: {
       nodeIntegration: false, // is default value after Electron v5
       contextIsolation: true, // protect against prototype pollution
@@ -14,9 +14,9 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
     },
     // alwaysOnTop: true,
-    // backgroundColor: "#b0aaaaaa",
-    // frame: false,
-    // transparent: true,
+    backgroundColor: "#b0aaaaaa",
+    frame: false,
+    transparent: true,
   });
 
   // and load the index.html of the app.
