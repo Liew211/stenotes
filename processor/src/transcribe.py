@@ -3,6 +3,12 @@ import sounddevice as sd
 import vosk
 import logging
 import json
+from enum import Enum
+
+
+class TextType(Enum):
+    PARTIAL = "PARTIAL"
+    SENTENCE = "SENTENCE"
 
 
 def transcribe(input_device, model_path):
@@ -32,14 +38,14 @@ def transcribe(input_device, model_path):
             data = stream.get()
             if rec.AcceptWaveform(data):
                 result = json.loads(rec.Result())
-                text = result["text"]
-                if len(text) > 0:
-                    yield text
+                sentence = result["text"]
+                if len(sentence) > 0:
+                    yield (TextType.SENTENCE, sentence)
             else:
                 result = json.loads(rec.PartialResult())
                 partial = result["partial"]
                 if len(partial) > 0:
-                    print(f'\t{partial}')
+                    yield (TextType.PARTIAL, partial)
 
 
 if __name__ == "__main__":
@@ -60,5 +66,5 @@ if __name__ == "__main__":
                         metavar='MODEL_PATH', help='Path to the model')
     args = parser.parse_args()
 
-    for text in transcribe(args.device, args.model):
-        print(text)
+    for text_type, text in transcribe(args.device, args.model):
+        print(f"{text_type}\t{text}")
