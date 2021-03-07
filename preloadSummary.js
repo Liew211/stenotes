@@ -6,19 +6,25 @@ const replaceText = (selector, text) => {
 };
 const foundKeyWords = [];
 
-let olympicData = { 'keyword': 'olympics', 'title': 'Olympic Games', 'url': 'https://en.wikipedia.org/wiki/Olympic Games', 'summary': 'The modern Olympic Games or Olympics (French: Jeux olympiques) are leading international sporting events featuring summer and wi...' }
+let olympicData = {
+  keyword: "olympics",
+  title: "Olympic Games",
+  url: "https://en.wikipedia.org/wiki/Olympic_Games",
+  summary:
+    "The modern Olympic Games or Olympics (French: Jeux olympiques) are leading international sporting events featuring summer and wi...",
+};
 
 const OpenURL = (url) => {
-  require('electron').shell.openExternal(url);
-}
+  require("electron").shell.openExternal(url);
+};
 
 const UpdateSummary = (data) => {
-  const summaryContainer = document.getElementById('summary-container');
+  const summaryContainer = document.getElementById("summary-container");
   if (foundKeyWords.includes(data.title)) return;
   foundKeyWords.push(data.title);
   // Create card element
-  const card = document.createElement('div');
-  card.classList = 'card-body';
+  const card = document.createElement("div");
+  card.classList = "card-body";
 
   // Construct card content
   const content = `
@@ -34,7 +40,7 @@ const UpdateSummary = (data) => {
 
   // Append newyly created card element to the container
   summaryContainer.innerHTML += content;
-}
+};
 
 const io = require("socket.io-client");
 var socket = io("http://localhost:8000");

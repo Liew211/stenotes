@@ -36,6 +36,6 @@ class Summarizer:
                 "summary": f"{page.summary[:length]}..."
             }
             return output
-        except:
+        except Exception as e:
+            print(f"Error {e} while looking up keyword {keyword}")
             return None
-            print(f"Error looking up keyword {keyword}")
