@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_socketio import SocketIO
-from processor.src.transcribe import transcribe, TextType
+from processor.src.transcribe import Transcriber
 from processor.src.summarize import Summarizer
 
 
@@ -21,14 +21,16 @@ def on_disconnect():
 
 
 def main():
-    for text_type, text in transcribe(input_device=args.device, model_path=args.model):
+    for text_type, text in transcriber.transcribe():
         socketio.sleep(0)
-        if text_type is TextType.SENTENCE:
+        if text_type is Transcriber.TextType.SENTENCE:
+            if text == "stop":
+                exit(0)
             text = f'{text.capitalize()}.'
             summarizer.add_sentence(text)
             for summary in summarizer.get_summaries(num=1):
-                print(f"KEYWORD\t{summary}")
-                socketio.emit("keyword", {"data": summary})
+                print(f"SUMMARY\t{summary}")
+                socketio.emit("summary", {"data": summary})
             socketio.emit("full", {"data": text})
         else:
             socketio.emit("partial", {"data": text})
@@ -47,5 +49,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     summarizer = Summarizer(args.buffer_size)
+    transcriber = Transcriber(args.device, args.model)
 
     socketio.run(app,port=8000)
