@@ -11,26 +11,30 @@ class Summarizer:
 
     def add_sentence(self, sentence):
         self.buffer.append(sentence)
-        while len(buffer) > self.buffer_size:
+        while len(self.buffer) > self.buffer_size:
             self.buffer.popleft()
 
     def get_summaries(self, num):
+        if len(self.buffer) < self.buffer_size:
+            return
         buffer_text = " ".join(self.buffer)
         keywords = self.model.extract_keywords(buffer_text, top_n=num)
         for keyword, _ in keywords:
             summary = self.get_summary(keyword)
+            # print(keyword)
+            # print(summary)
             if summary is not None:
                 yield summary
 
     def get_summary(self, keyword, length=128):
         try:
             search = wikipedia.search(keyword, results=1, suggestion=True)
-            print(search[0][0])
-            page = wikipedia.page(title=search[0][0])
+            result = search[0][0]
+            page = wikipedia.page(title=result)
             output = {
                 "keyword": keyword,
-                "title": search[0][0],
-                "url": "https://en.wikipedia.org/wiki/" + search[0][0],
+                "title": result,
+                "url": "https://en.wikipedia.org/wiki/" + result,
                 "summary": f"{page.summary[:length]}..."
             }
             return output
