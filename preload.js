@@ -15,4 +15,5 @@ window.addEventListener("DOMContentLoaded", () => {
 const { contextBridge, desktopCapturer } = require("electron");
 contextBridge.exposeInMainWorld("stenotesAPI", {
   getSources: desktopCapturer.getSources,
+  platform: process.platform
 });
