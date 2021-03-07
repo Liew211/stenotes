@@ -28,7 +28,7 @@ class Summarizer:
 
     def get_summary(self, keyword, length=128):
         try:
-            page = wikipedia.page(title=result)
+            page = wikipedia.page(title=keyword)
             output = {
                 "keyword": keyword,
                 "title": page.title,
