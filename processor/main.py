@@ -50,7 +50,7 @@ if __name__ == "__main__":
                         help='input device name')
     parser.add_argument('-m', '--model', type=str, required=True,
                         metavar='MODEL_PATH', help='Path to the model')
-    parser.add_argument('-b', '--buffer-size', type=int, default=10,
+    parser.add_argument('-b', '--buffer-size', type=int, default=2,
                         help='size of summarization buffer')
     args = parser.parse_args()
 

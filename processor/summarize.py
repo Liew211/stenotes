@@ -15,8 +15,8 @@ class Summarizer:
             self.buffer.popleft()
 
     def get_summaries(self, num):
-        if len(self.buffer) < self.buffer_size:
-            return
+        #if len(self.buffer) < self.buffer_size:
+        #    return
         buffer_text = " ".join(self.buffer)
         keywords = self.model.extract_keywords(buffer_text, top_n=num)
         for keyword, _ in keywords:
@@ -28,14 +28,15 @@ class Summarizer:
 
     def get_summary(self, keyword, length=128):
         try:
-            search = wikipedia.search(keyword, results=1, suggestion=True)
-            result = search[0][0]
-            page = wikipedia.page(title=result)
+            #search = wikipedia.search(keyword, results=1, suggestion=True)
+            #result = search[0][0]
+            summary = wikipedia.summary(keyword)
+            #page = wikipedia.page(title=result)
             output = {
                 "keyword": keyword,
-                "title": result,
-                "url": "https://en.wikipedia.org/wiki/" + result,
-                "summary": f"{page.summary[:length]}..."
+                "title": keyword,
+                "url": "https://en.wikipedia.org/wiki/" + keyword,
+                "summary": f"{summary[:length]}..."
             }
             return output
         except:
