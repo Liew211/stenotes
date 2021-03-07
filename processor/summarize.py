@@ -28,15 +28,12 @@ class Summarizer:
 
     def get_summary(self, keyword, length=128):
         try:
-            #search = wikipedia.search(keyword, results=1, suggestion=True)
-            #result = search[0][0]
-            summary = wikipedia.summary(keyword)
-            #page = wikipedia.page(title=result)
+            page = wikipedia.page(title=result)
             output = {
                 "keyword": keyword,
-                "title": keyword,
-                "url": "https://en.wikipedia.org/wiki/" + keyword,
-                "summary": f"{summary[:length]}..."
+                "title": page.title,
+                "url": page.url,
+                "summary": f"{page.summary[:length]}..."
             }
             return output
         except:
