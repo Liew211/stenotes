@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, screen } = require("electron");
+const { app, BrowserWindow, screen, shell } = require("electron");
 const path = require("path");
 
 function createMainWindow() {
@@ -18,7 +18,7 @@ function createMainWindow() {
       enableRemoteModule: false, // turn off remote
       preload: path.join(__dirname, "preload.js"),
     },
-    // alwaysOnTop: true,
+    alwaysOnTop: true,
     backgroundColor: "#b0aaaaaa",
     frame: false,
     transparent: true,
@@ -49,7 +49,7 @@ function createSideWindow() {
       enableRemoteModule: false, // turn off remote
       preload: path.join(__dirname, "preloadSummary.js"),
     },
-    // alwaysOnTop: true,
+    alwaysOnTop: true,
     backgroundColor: "#b0aaaaaa",
     frame: false,
     transparent: true,
@@ -63,6 +63,10 @@ function createSideWindow() {
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
+  win.webContents.on('will-navigate', (event, url) => {
+    event.preventDefault()
+    shell.openExternal(url)
+  });
 }
 
 try {

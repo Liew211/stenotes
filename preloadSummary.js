@@ -6,11 +6,7 @@ const replaceText = (selector, text) => {
 };
 const foundKeyWords = [];
 const UpdateSummary = (data) => {
-  const summaryContainer = document.getElementById('summary');
-  if(summaryContainer == null){
-    console.log("summary container not found");
-    return;
-  }
+  const summaryContainer = document.getElementById('summary-container');
   if(foundKeyWords.includes(data.title))return;
   foundKeyWords.push(data.title);
   // Create card element
@@ -30,9 +26,8 @@ const UpdateSummary = (data) => {
 
     <div id="collapse-${data.title}" class="collapse show" aria-labelledby="heading-${data.title}" data-parent="#accordion">
       <div class="card-body">
-        <h5>${data.title}</h5>
+        <a href="${data.url}" target="_blank"><h5>${data.title}</h5></a>
         <p>${data.summary}</p>
-        <p>${data.url}</p>
         ...
       </div>
     </div>

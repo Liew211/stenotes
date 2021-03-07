@@ -1,9 +1,10 @@
 html {
     font-size: 16px;
+    height: 100vh;
 }
 
 body {
-    display: flex;
+    display: block;
     font-size: 2rem;
     align-items: center;
 }
@@ -12,14 +13,58 @@ body {
     -webkit-user-select: none;
     -webkit-user-drag: none;
     -webkit-app-region: drag;
-    flex-basis: 1;
     user-select: none;
     height: 2rem;
     width: 4rem;
 }
 
-.text * {
-    
-    display: block;
+.main-drag {
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
 
+.side-drag {
+    position: fixed;
+    left: 0px;
+    top: 30px;
+}
+
+#side {
+    height: 100vh;
+}
+
+.text {
+    display: block;
+}
+
+.text-main {
+    position: relative;
+    left: 4rem;
+    right: 4rem;
+    top: 0;
+    max-height: 100vh;
+    overflow-y: scroll;
+}
+
+#summary-head {
+    position: fixed;
+    left: 4rem;
+    top: 0px;
+    margin-top: 1.5rem;
+    font-size: 2.5rem;
+}
+
+#summary-container {
+    position: absolute;
+    top: 10vh;
+    height: 90vh;
+    width: 100vw;
+    overflow-y: scroll;
+}
+
+a {
+    text-decoration: none;
 }
