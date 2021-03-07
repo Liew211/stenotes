@@ -32,7 +32,7 @@ const UpdateSummary = (data) => {
 
     <div id="collapse-${data.title}" >
       <div class="card-body">
-        <a target="_blank"><h5>${data.title}</h5></a>
+        <a href="${data.url}"><h5>${data.title}</h5></a>
         <p>${data.summary}</p>
         ...
       </div>
@@ -42,7 +42,6 @@ const UpdateSummary = (data) => {
 
   // Append newyly created card element to the container
   summaryContainer.innerHTML += content;
-  document.getElementById("card-" + data.title).addEventListener("click", OpenURL(data.url));
 }
 
 const io = require("socket.io-client");
