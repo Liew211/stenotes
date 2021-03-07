@@ -6,18 +6,9 @@ const replaceText = (selector, text) => {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-  
-
   for (const type of ["chrome", "node", "electron"]) {
     replaceText(`${type}-version`, process.versions[type]);
   }
-});
-
-// Node imports for renderer.js
-const { contextBridge, desktopCapturer } = require("electron");
-contextBridge.exposeInMainWorld("stenotesAPI", {
-  getSources: desktopCapturer.getSources,
-  platform: process.platform
 });
 
 const io = require("socket.io-client");
