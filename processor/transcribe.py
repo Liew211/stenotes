@@ -12,14 +12,14 @@ class Transcriber:
         SENTENCE = "SENTENCE"
 
     def __init__(self, input_device, model_path):
-        device_info = sd.query_devices(input_device, 'input')
-        self.samplerate = int(device_info['default_samplerate'])
         self.input_device = input_device
         self.model = vosk.Model(model_path)
-        self.recognizer = vosk.KaldiRecognizer(self.model, self.samplerate)
-
+        device_info = sd.query_devices(self.input_device, 'input')
+        self.samplerate = int(device_info['default_samplerate'])
 
     def transcribe(self):
+        rec = vosk.KaldiRecognizer(self.model, self.samplerate)
+
         stream = Queue()
 
         def callback(indata, frames, time, status):
@@ -27,6 +27,7 @@ class Transcriber:
             if status:
                 logging.warning(status)
             stream.put(bytes(indata))
+
 
         with sd.RawInputStream(
             samplerate=self.samplerate,
@@ -36,15 +37,16 @@ class Transcriber:
             channels=1,
             callback=callback,
         ):
+
             while True:
                 data = stream.get()
-                if self.recognizer.AcceptWaveform(data):
-                    result = json.loads(self.recognizer.Result())
+                if rec.AcceptWaveform(data):
+                    result = json.loads(rec.Result())
                     sentence = result["text"]
                     if len(sentence) > 0:
                         yield (Transcriber.TextType.SENTENCE, sentence)
                 else:
-                    result = json.loads(self.recognizer.PartialResult())
+                    result = json.loads(rec.PartialResult())
                     partial = result["partial"]
                     if len(partial) > 0:
                         yield (Transcriber.TextType.PARTIAL, partial)

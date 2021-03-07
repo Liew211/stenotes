@@ -15,6 +15,8 @@ class Summarizer:
             self.buffer.popleft()
 
     def get_summaries(self, num):
+        if len(self.buffer) < self.buffer_size:
+            return
         buffer_text = " ".join(self.buffer)
         keywords = self.model.extract_keywords(buffer_text, top_n=num)
         for keyword, _ in keywords:
