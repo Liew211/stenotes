@@ -1,17 +1,8 @@
 from flask import Flask
 from flask_socketio import SocketIO
-# import eventlet
-# eventlet.monkey_patch()
 from processor.src.transcribe import transcribe, TextType
-# from src.summarize import Summarizer
-from collections import deque
-from threading import Thread
+from processor.src.summarize import Summarizer
 
-
-INPUT_DEVICE = 2
-MODEL_PATH = "models/vosk-model-en-us-aspire-0.2"
-BUFFER_SIZE = 8
-print("here")
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -19,39 +10,42 @@ socketio = SocketIO(app)
 
 @socketio.on('connect')
 def on_connect():
-    print("connected server!!")
+    print("connected to server")
     socketio.emit("serverResponse", "First Push")
     socketio.start_background_task(target=main)
 
 
 @socketio.on('disconnect')
 def on_disconnect():
-    print("disconnected server!!")
+    print("disconnected from server")
 
 
-
-queue = []
-print("before main")
 def main():
-
-    for text_type, text in transcribe(input_device=INPUT_DEVICE, model_path=MODEL_PATH):
+    for text_type, text in transcribe(input_device=args.device, model_path=args.model):
         socketio.sleep(0)
         if text_type is TextType.SENTENCE:
-            if text == "stop":
-                exit(0)
             text = f'{text.capitalize()}.'
-            # summarizer.add_sentence(text)
+            summarizer.add_sentence(text)
+            for summary in summarizer.get_summaries(num=1):
+                print(f"KEYWORD\t{summary}")
+                socketio.emit("keyword", {"data": summary})
             socketio.emit("full", {"data": text})
-            queue.append({"full": {"data": text}})
         else:
             socketio.emit("partial", {"data": text})
-            queue.append({"partial": {"data": text}})
         print(f"{text_type}\t{text}")
-    exit(0)
 
 
 if __name__ == "__main__":
-    socketio.run(app,port=8000)
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument('-d', '--device', type=str, required=True,
+                        help='input device name')
+    parser.add_argument('-m', '--model', type=str, required=True,
+                        metavar='MODEL_PATH', help='Path to the model')
+    parser.add_argument('-b', '--buffer-size', type=int, default=10,
+                        help='size of summarization buffer')
+    args = parser.parse_args()
 
-    print("HELLO WORLD")
-    # eventlet.wsgi.server(eventlet.listen(('', 8000)), app)
+    summarizer = Summarizer(args.buffer_size)
+
+    socketio.run(app,port=8000)
