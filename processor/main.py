@@ -25,8 +25,14 @@ def get_timestring():
     return str(datetime.now()).replace(' ', '_').replace(':', '')
 
 
-def emit(key, value, log):
-    log.write(f'{get_timestring()}\t{key}\t{value}\n')
+def emit(key, value, log=None):
+    try:
+        message = f'{get_timestring()}\t{key}\t{value}'
+        if log is not None:
+            log.write(message + '\n')
+        print(message)
+    except:
+        pass
     socketio.emit(key, {"data": value})
 
 
@@ -49,7 +55,7 @@ def main():
                 emit("full", text, log)
             else:
                 text = text.capitalize()
-                emit("partial", text, log)
+                emit("partial", text)
 
 
 if __name__ == "__main__":

@@ -6,12 +6,11 @@ const replaceText = (selector, text) => {
 };
 const foundKeyWords = [];
 
-let olympicData = {
-  keyword: "olympics",
-  title: "Olympic Games",
-  url: "https://en.wikipedia.org/wiki/Olympic_Games",
-  summary:
-    "The modern Olympic Games or Olympics (French: Jeux olympiques) are leading international sporting events featuring summer and wi...",
+let welcome = {
+  keyword: "stenotes",
+  title: "Thanks for using Stenotes!",
+  url: "https://devpost.com/software/stenotes",
+  summary: "Key topics from what you're listening to will appear below.",
 };
 
 const OpenURL = (url) => {
@@ -50,7 +49,7 @@ window.addEventListener("DOMContentLoaded", () => {
     replaceText(`${type}-version`, process.versions[type]);
   }
   socket = io("http://localhost:8000");
-  UpdateSummary(olympicData);
+  UpdateSummary(welcome);
 });
 
 socket.on("connect", () => {
