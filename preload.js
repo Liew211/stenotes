@@ -15,6 +15,11 @@ window.addEventListener("DOMContentLoaded", () => {
   socket =  io("http://localhost:8000");
 });
 
+window.addEventListener("click", () => {
+  console.log("clicked")
+  socket.emit("clicked")
+})
+
 socket.on("connect", () => {
   console.log("socket.id"); // x8WIv7-mJelg7on_ALbx
 });
