@@ -1,10 +1,15 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, screen } = require("electron");
 const path = require("path");
 
-function createWindow() {
+function createMainWindow() {
   // Create the browser window.
+  let display = screen.getPrimaryDisplay();
+  let width = display.bounds.width;
+  let height = display.bounds.height;
   const win = new BrowserWindow({
+    x: width/2-800,
+    y: height-225,
     width: 800,
     height: 200,
     webPreferences: {
@@ -28,6 +33,38 @@ function createWindow() {
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
+
+function createSideWindow() {
+  // Create the browser window.
+  let display = screen.getPrimaryDisplay();
+  let width = display.bounds.width;
+  const win = new BrowserWindow({
+    x: width-225,
+    y:100,
+    width: 200,
+    height: 800,
+    webPreferences: {
+      nodeIntegration: false, // is default value after Electron v5
+      contextIsolation: true, // protect against prototype pollution
+      enableRemoteModule: false, // turn off remote
+      preload: path.join(__dirname, "preload.js"),
+    },
+    // alwaysOnTop: true,
+    backgroundColor: "#b0aaaaaa",
+    frame: false,
+    transparent: true,
+  });
+
+  // and load the index.html of the app.
+  win.loadFile("keywords.html");
+
+  win.setVisibleOnAllWorkspaces(true);
+  // win.setIgnoreMouseEvents(true);
+
+  // Open the DevTools.
+  // mainWindow.webContents.openDevTools()
+}
+
 try {
     require("electron-reloader")(module);
 } catch (_) { }
@@ -36,8 +73,8 @@ try {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-    createWindow();
-
+    createMainWindow();
+    createSideWindow();
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     app.on("activate", function () {
